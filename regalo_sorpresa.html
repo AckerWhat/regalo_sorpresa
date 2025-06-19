@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Regalo Sorpresa</title>
+  <style>
+    body {
+      background: black;
+      background-repeat: no-repeat;
+      background-size: 100% 100vh;
+      color: rgba(250,250,100,1);
+      text-shadow: 0 0 .3em yellow;
+      text-align:center;
+      text-shadow: 0em -.2em .1em gold;
+      display:flex;
+      font-family: sans-serif;
+      justify-content:center;
+      overflow: hidden;
+      align-items:center; 
+    }
+
+    /* animations */
+    @keyframes fade-in {
+      0%{opacity:0;}
+      100%{ opacity: 1; }
+    }
+
+    @keyframes floaty {
+      0% { 
+        transform:
+          translateZ(16em);    
+      }
+      
+      50% { 
+        transform:
+          translateZ(15.5em);    
+      }
+    }
+
+    @keyframes rotate {
+      0%{
+        transform:
+          rotateZ(0deg)
+          translateZ(2em)      
+          rotateX(-90deg)
+          rotateY(45deg);   
+      }
+      50%{transform:
+          rotateZ(180deg)
+          translateZ(1.5em)      
+          rotateX(-90deg)
+          rotateY(45deg);   
+      }
+      100%{
+        transform:rotateZ(360deg)
+          translateZ(2em)       
+          rotateX(-90deg)
+          rotateY(45deg);   
+      }
+    }
+
+    @keyframes wiggle {
+      0% {
+        transform: 
+          translateZ(4em)
+          rotateX(0deg)
+          rotateY(0deg)
+      }
+      11% {
+        transform: translateZ(4em)
+          rotateX(1deg)
+          rotateY(-1deg);
+      }
+      22% {
+        transform: translateZ(4em)
+          rotateX(1deg)
+          rotateY(1deg);
+      }
+      33% {
+        transform: translateZ(4em)
+          rotateX(1deg)
+          rotateY(0deg);
+      }
+      44% {
+        transform: translateZ(4em)
+          rotateX(-1deg)
+          rotateY(-1deg);
+      }
+      55% {
+        transform: translateZ(4em)
+          rotateX(1deg)
+          rotateY(1deg);
+      }
+      66% {
+        transform: translateZ(4em)
+          rotateX(-1deg)
+          rotateY(0deg);
+      }
+      100%{
+        transform: translateZ(4em) rotateX(0deg);
+      }
+    }
+
+    @keyframes down {
+      0%{transform: translateZ(16em);}
+      100%{transform: translateZ(4em);}
+    }
+
+    @keyframes up {
+      0%{
+        transform: translateZ(4em) rotateX(0deg);
+      }
+      100%{
+        transform: translateZ(16em) rotateX(0deg);
+      }
+    }
+
+    /* container for floating text */
+    .qmark {
+      font-size: 3em;
+      font-weight: 700;
+      text-shadow: 0 0 1em 0em rgba(250,250,0,1);
+      position:absolute;
+      transform: 
+        translateZ(1em) 
+        translateX(.8em)
+        translateY(.5em)
+        rotateX(-90deg)
+        rotateY(45deg);
+    }
+    /* the present :D */
+    .heart-gift{ 
+      color: crimson;
+      animation: 
+        rotate 2s infinite linear,
+        fade-in 1.5s ease;
+      opacity: 1;
+      font-size: 3em;
+      z-index: 2; 
+      position: absolute;
+      transform-origin: 50% 50%;
+      text-shadow: 
+        0 0 .1em crimson;
+    }
+    /* the container for the 3d stuffs */
+    .floor {
+      top:40%;
+      display: flex;
+      align-items: center;
+      justify-content:center; 
+      z-index: 1;
+      height: 20em;
+      position: absolute;
+      width: 20em;
+      transform-origin: 0% 0%;
+      transform: 
+        rotateX(45deg) rotateZ(45deg);
+      transform-style: preserve-3d;
+      perspective: 1200px; 
+    }
+
+    /*  box container and parts */
+    .box {
+      z-index:1;  
+      position: relative;
+      transform: translateZ(6em);
+      transform-style: preserve-3d;  
+    }
+    .face {
+      height: 6em;
+      width: 6em;
+      position: absolute;
+      z-index: 1;
+      box-shadow: 
+        0 0 .5em .25em rgba(0,0,0,.2) inset;
+    }
+    .top {
+      background-color: #880E4F; 
+      background-image:
+        linear-gradient(
+          -90deg,
+          transparent 49%,
+          #F8BBD0 
+        ),
+        linear-gradient(
+          0deg,
+          transparent 49%,
+          #F8BBD0
+        );
+      transform: translateZ(3em);
+      box-shadow: 
+        0 0 0 .4em #C2185B inset; 
+    }
+
+    .right {
+      background-image: linear-gradient(
+          to top,
+          rgba(0,0,0,0) 33%,
+          #F48FB1 34% 65%, 
+          rgba(0,0,0,0) 66%);
+      background-color: #AD1457;
+      transform: rotateY(90deg) translateZ(3em);
+    }
+
+    .left {
+      background-image: linear-gradient(
+          to right,
+          rgba(0,0,0,0) 33%,
+          #F8BBD0 33% 66%,
+          rgba(0,0,0,0) 66%);
+      background-color: #C2185B;
+      transform: rotateX(-90deg) translateZ(3em);
+    }
+
+    /* lid and parts */
+    .lid{ 
+      animation: 
+        wiggle 1.5s infinite cubic-bezier(.2,1.2,.6,1.1); 
+      position: absolute;
+      height: 6.5em;
+      width: 6.5em;  
+      transform-style:preserve-3d;
+      z-index:2;
+    }
+    .open{
+      transform: translateZ(16em); 
+      animation: up 1s ease-out,
+        floaty 2s 1s infinite linear;
+    }
+    .close { 
+      transform: translateZ(4em);
+      animation: down 1s ease-out,
+        wiggle 1.5s  1s infinite cubic-bezier(.2,1.2,.6,1.1); 
+    }
+    .ltop {
+      height: 6.5em;
+      width: 6.5em;
+      background-color: #E91E63;
+      background-image: linear-gradient(
+          to right,
+          rgba(0,0,0,0) 33%,
+          #F8BBD0 34% 65%,
+          rgba(0,0,0,.1) 66% 68%,
+          rgba(0,0,0,0) 69%),
+      linear-gradient(
+          to top,
+          rgba(0,0,0,0) 33%,
+          #F48FB1 34% 65%,
+          rgba(0,0,0,0) 66%);
+    }
+
+    .lright {
+      z-index:2;
+      background-color: #D81B60;
+      width: 3em;
+      height: 6.5em;
+      transform:
+        rotateY(90deg) 
+        translateX(1.5em) 
+        translateZ(5em);
+      background-image: linear-gradient(
+          to top,
+          rgba(0,0,0,0) 33%,
+          #F8BBD0 34% 65%,
+          rgba(0,0,0,0) 66%);
+    }
+
+    .lleft {
+      height: 3em;
+      width: 6.5em;
+      background-image:
+        linear-gradient(
+          to right,
+          rgba(0,0,0,0) 33%,
+          #FFCDD2 33% 66%,
+          rgba(0,0,0,0) 66%);
+      background-color: #AD1457;
+      transform: 
+        rotateX(-90deg) 
+        translateY(1.5em)
+        translateZ(5em);
+    }
+
+    .message {
+      position: fixed;
+      top: 80%;
+      left: 50%;
+      transform: translateX(-80%, -80%);
+      text-align: center;
+      font-size: 3em;
+      color: #ff66cc;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-shadow: 0 0 10px #ff1493, 0 0 20px #ff1493;
+      animation: fade-in 1.5s ease forwards;
+      z-index: 999; 
+      pointer-events: none; 
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      width: 100vw;
+      height: 100vh;
+      z-index: 998;
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<canvas id="confetti-canvas"></canvas>
+  
+<script src='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/all.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/react/16.8.5/umd/react.production.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.8.5/umd/react-dom.production.min.js'></script>
+<script>
+const { useReducer } = React;
+
+//ACTIONS
+const TOGGLE_BOX = '[GiftBox] Toggle';
+const toggleBox = () => {
+  return { type: TOGGLE_BOX };
+};
+
+//REDUCERS (Update)
+const DEFAULT = { open: false, wasOpen: false };
+
+const reducer = (
+state = DEFAULT,
+{ type }) =>
+{
+
+  switch (type) {
+    case TOGGLE_BOX:{
+        return {
+          open: !state.open,
+          wasOpen: state.open };
+
+      }
+    default:return state;}
+
+};
+
+//COMPONENT
+
+const GiftBox = () => {
+  const [state, dispatch] = useReducer(reducer, DEFAULT);
+
+  return (
+    React.createElement("div", { className: "floor" },
+      React.createElement("div", { className: "shadow" }),
+      React.createElement("div", { className: "shadow2" }),
+      React.createElement("div", { className: "shadow3" }),
+
+      React.createElement("div", { className: "box" },
+        state.open ? React.createElement("i", { className: "fa fa-heart heart-gift" }) : null,
+        React.createElement("div", {
+          className:
+            state.open ? 'lid open' :
+            state.wasOpen ? 'lid close' :
+            'lid',
+          onClick: e => {
+  dispatch(toggleBox());
+  if (!state.open) {
+    startConfetti();
+  }
+}
+        },
+          React.createElement("div", { className: "qmark" }, state.open ? '!' : '?'),
+          React.createElement("div", { className: "face ltop" }),
+          React.createElement("div", { className: "face lleft" }),
+          React.createElement("div", { className: "face lright" })
+        ),
+        React.createElement("div", { className: "face top" }),
+        React.createElement("div", { className: "face left" }),
+        React.createElement("div", { className: "face right" })
+      ),
+
+      state.open && React.createElement("div", { className: "message" }, "Feliz cumpleaños mi vida! ❤️")
+    )
+  );
+};
+
+// render
+
+ReactDOM.render( /*#__PURE__*/
+React.createElement(GiftBox, null),
+document.getElementById('root'));
+
+
+function startConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const confetti = [];
+
+  for (let i = 0; i < 150; i++) {
+    confetti.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: Math.random() * 6 + 4,
+      d: Math.random() * 50 + 10,
+      color: `hsl(${Math.random() * 20 + 320}, 100%, 75%)`, 
+      tilt: Math.random() * 10 - 5,
+      tiltAngleIncrement: Math.random() * 0.07 + 0.05,
+      tiltAngle: 0
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    confetti.forEach(c => {
+      ctx.beginPath();
+      ctx.lineWidth = c.r;
+      ctx.strokeStyle = c.color;
+      ctx.moveTo(c.x + c.tilt + c.r / 2, c.y);
+      ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 2);
+      ctx.stroke();
+    });
+    update();
+    requestAnimationFrame(draw);
+  }
+
+  function update() {
+    confetti.forEach(c => {
+      c.tiltAngle += c.tiltAngleIncrement;
+      c.y += (Math.cos(c.d) + 3 + c.r / 2) * 0.5;
+      c.x += Math.sin(0.5);
+      c.tilt = Math.sin(c.tiltAngle) * 15;
+
+      if (c.y > canvas.height) {
+        c.y = -10;
+        c.x = Math.random() * canvas.width;
+      }
+    });
+  }
+
+  draw();
+}
+</script>
+</body>
+</html>
